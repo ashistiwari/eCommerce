@@ -1,5 +1,7 @@
 package com.ecommerce.project.service;
 
+import com.ecommerce.project.exceptions.APIException;
+import com.ecommerce.project.exceptions.ResourceNotFoundException;
 import com.ecommerce.project.model.Category;
 import com.ecommerce.project.repository.CategoryRepository;
 import org.springframework.http.HttpStatus;
@@ -25,11 +27,18 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public List<Category> getAllCategories() {
         List<Category> categories=categoryRepository.findAll();
+        if (categories.isEmpty()){
+            throw new APIException("Category not created till now!!");
+        }
         return categories;
     }
 
     @Override
     public String createCategory(Category category) {
+        Category savedCategory=categoryRepository.findByCategoryName(category.getCategoryName());
+        if (savedCategory!=null){
+            throw new APIException("Category already exists with category Name  : "+category.getCategoryName());
+        }
         category.setCategoryId(nextId++);
         categoryRepository.save(category);
         return "Category added successfully";
@@ -39,7 +48,8 @@ public class CategoryServiceImpl implements CategoryService {
     public String deleteCategory(Long categoryId) {
         List<Category> categories=categoryRepository.findAll();
         Category categoryFetched= categories.stream().filter(category->category.getCategoryId().equals(categoryId)).findFirst()
-                    .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND,"Category not found"));
+                    .orElseThrow(()->new ResourceNotFoundException(
+                            "Category","categoryId",categoryId));
 
         categoryRepository.delete(categoryFetched);
         return "Category with category id"+categoryId+" deleted successfully";
@@ -54,7 +64,8 @@ public class CategoryServiceImpl implements CategoryService {
             Category savedCategory=categoryRepository.save(categoryFound.get());
             return savedCategory;
         }else{
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Category not found");
+            throw  new ResourceNotFoundException(
+                    "Category","categoryId",categoryId);
         }
     }
 }
