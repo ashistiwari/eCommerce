@@ -56,24 +56,24 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public String deleteCategory(Long categoryId) {
+    public CategoryDTORequest deleteCategory(Long categoryId) {
         List<Category> categories=categoryRepository.findAll();
         Category categoryFetched= categories.stream().filter(category->category.getCategoryId().equals(categoryId)).findFirst()
                     .orElseThrow(()->new ResourceNotFoundException(
                             "Category","categoryId",categoryId));
-
         categoryRepository.delete(categoryFetched);
-        return "Category with category id"+categoryId+" deleted successfully";
+        return modelMapper.map(categoryFetched,CategoryDTORequest.class);
     }
 
     @Override
-    public Category updateCategory(Long categoryId, Category category) {
+    public CategoryDTORequest updateCategory(Long categoryId, Category category) {
         List<Category> categories=categoryRepository.findAll();
         Optional<Category> categoryFound=categories.stream().filter(category1->category1.getCategoryId().equals(categoryId)).findFirst();
         if(categoryFound.isPresent()){
             categoryFound.get().setCategoryName(category.getCategoryName());
             Category savedCategory=categoryRepository.save(categoryFound.get());
-            return savedCategory;
+            CategoryDTORequest categoryDto = modelMapper.map(savedCategory, CategoryDTORequest.class);
+            return categoryDto;
         }else{
             throw  new ResourceNotFoundException(
                     "Category","categoryId",categoryId);

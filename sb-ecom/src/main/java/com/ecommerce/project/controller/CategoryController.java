@@ -31,17 +31,17 @@ public class CategoryController {
         return new ResponseEntity<>(savedCategoryDTO,HttpStatus.CREATED) ;
     }
     @DeleteMapping("/api/public/category/{categoryId}")
-    public ResponseEntity<String> deleteCategory(@PathVariable Long categoryId){
+    public ResponseEntity<CategoryDTORequest> deleteCategory(@PathVariable Long categoryId){
 
-            String response = categoryService.deleteCategory(categoryId);
+            CategoryDTORequest response = categoryService.deleteCategory(categoryId);
             return ResponseEntity.status(HttpStatus.OK).body(response);
 
     }
     @PutMapping("/api/public/category/{categoryId}")
-    public ResponseEntity<Category> updateCategory(@PathVariable Long categoryId,
+    public ResponseEntity<CategoryDTORequest> updateCategory(@PathVariable Long categoryId,
                                                  @Valid @RequestBody Category category){
 
-            Category categoryUpdated = categoryService.updateCategory(categoryId, category);
+            CategoryDTORequest categoryUpdated = categoryService.updateCategory(categoryId, category);
             return new ResponseEntity<>(categoryUpdated, HttpStatus.OK);
 
     }

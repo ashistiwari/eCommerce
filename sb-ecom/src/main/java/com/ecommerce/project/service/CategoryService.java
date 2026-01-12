@@ -9,7 +9,7 @@ import java.util.List;
 public interface CategoryService {
     CategororyResponse getAllCategories();
     CategoryDTORequest createCategory(CategoryDTORequest category);
-    String deleteCategory(Long categoryId);
+    CategoryDTORequest deleteCategory(Long categoryId);
 
-    Category updateCategory(Long categoryId, Category category);
+    CategoryDTORequest updateCategory(Long categoryId, Category category);
 }
