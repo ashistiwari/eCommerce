@@ -11,4 +11,9 @@ import java.util.List;
 public class CategororyResponse {
 
     private List<CategoryDTORequest>  content;
+    private Integer pageNumber;
+    private Integer pageSize;
+    private Long totalElements;
+    private Integer totalPages;
+    private boolean lastPage;
 }
