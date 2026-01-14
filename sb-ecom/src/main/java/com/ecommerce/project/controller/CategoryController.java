@@ -24,7 +24,7 @@ public class CategoryController {
 
     @GetMapping("/api/public/categories")
     public ResponseEntity<CategororyResponse> getAllCategories(@RequestParam(name = "pageNumber", defaultValue = AppCOnstants.PAGE_NUMBER, required = false) Integer pageNumber,
-                                                               @RequestParam(name = "pageSize", defaultValue = AppCOnstants.PAGE_NUMBER, required = false) Integer pageSize,
+                                                               @RequestParam(name = "pageSize", defaultValue = AppCOnstants.PAGE_SIZE, required = false) Integer pageSize,
                                                                @RequestParam(name = "sortBy", defaultValue = AppCOnstants.SORT_CATEGORIES_BY, required = false) String sortBy,
                                                                @RequestParam(name = "sortOrder", defaultValue = AppCOnstants.SORT_DIR, required = false) String sortOrder){
 
