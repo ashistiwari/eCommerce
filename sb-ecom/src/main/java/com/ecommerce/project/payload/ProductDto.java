@@ -13,7 +13,7 @@ public class ProductDto {
     private String image;
     private Integer qantity;
     private double price;
-    private double specialPrice;
+    private Double specialPrice;
     private double discount;
 
 }

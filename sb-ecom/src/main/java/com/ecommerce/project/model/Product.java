@@ -17,7 +17,10 @@ public class Product {
     private String productName;
     private Integer quantity;
     private double price;
-    private double specialPrice;
+    private double discount;
+    @Column(nullable = true)
+    private Double specialPrice;
+    private String image;
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
