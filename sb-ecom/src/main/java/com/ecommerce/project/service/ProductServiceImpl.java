@@ -9,6 +9,8 @@ import com.ecommerce.project.repository.CategoryRepository;
 import com.ecommerce.project.repository.ProductRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
 
@@ -54,6 +56,34 @@ public class ProductServiceImpl implements ProductService{
         productResponse.setContent(productsDTOS);
         return productResponse;
     }
+
+    @Override
+    public ProductResponse searchByKeyword(String keyword) {
+        List<Product> products = productRepository.findByProductNameLikeIgnoreCase("%" + keyword + "%");
+        List<ProductDto> productsDTOS = products.stream()
+                .map(product -> modelMapper.map(product, ProductDto.class)).collect(Collectors.toList());
+        ProductResponse productResponse = new ProductResponse();
+        productResponse.setContent(productsDTOS);
+        return productResponse;
+    }
+
+    @Override
+    public ProductDto upadteProducts(Long productId, Product product) {
+        Product product1 = productRepository.findById(productId)
+                .orElseThrow(() -> new ResourceNotFoundException("Product", "productId", productId));
+        product1.setProductName(product.getProductName());
+        product1.setDescription(product.getDescription());
+        product1.setPrice(product.getPrice());
+        product1.setDiscount(product.getDiscount());
+        product1.setSpecialPrice(product.getSpecialPrice());
+        product1.setQuantity(product.getQuantity());
+        product1.setImage(product.getImage());
+        Product updatedProduct = productRepository.save(product1);
+        ProductDto updatedProductDto = modelMapper.map(updatedProduct, ProductDto.class);
+        return updatedProductDto;
+
+    }
+
 
 }
 

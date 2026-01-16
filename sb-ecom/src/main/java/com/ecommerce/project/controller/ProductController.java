@@ -30,4 +30,14 @@ public class ProductController {
         ProductResponse productResponse=productService.searchByCategoryId(categoryId);
         return new ResponseEntity<>(productResponse,HttpStatus.OK);
     }
+    @GetMapping("/public/products/keyword/{keyword}")
+    public ResponseEntity<ProductResponse> getProductsByKeyword(@PathVariable String keyword){
+        ProductResponse productResponse=productService.searchByKeyword(keyword);
+        return new ResponseEntity<>(productResponse,HttpStatus.OK);
+    }
+    @PatchMapping("/admin/product/{productId}")
+    public ResponseEntity<ProductDto> updateProducts(@PathVariable Long productId,@RequestBody Product product) {
+        ProductDto updatedProduct=productService.upadteProducts(productId,product);
+        return new ResponseEntity<>(updatedProduct, HttpStatus.OK);
+    }
 }
